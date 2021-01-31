@@ -1,0 +1,2 @@
+background: https://opengameart.org/node/25677
+tutorial: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Basic_usage
