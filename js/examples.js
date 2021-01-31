@@ -4,7 +4,7 @@ import {distance_scale, planet_size_scale, scale} from "./helpers.js";
 export function setup_solar_system(c) {
     const drawables = {};
     drawables['barycenter'] = new Barycenter(c, c.w / 2, c.h / 2, {});
-    const sun = new Star(c, c.w / 2, c.h / 2, {
+    const sun = new Star(c, {
         color: 'yellow',
         diameter: scale(1.4, 15),
         orbits: drawables['barycenter'],
@@ -83,17 +83,97 @@ export function setup_solar_system(c) {
 export function setup_close_binary(c) {
     const drawables = {};
     let b;
-    drawables['barycenter'] = b = new Barycenter(c, c.w / 2 + 10, c.h / 2, {});
-    // drawables['primary'] = new Star(c, c.w / 2 + 50, c.h / 2, {
+    drawables['barycenter'] = b = new Barycenter(c, c.w / 2, c.h / 2, {});
+
+    // example 1: Two bodies with the same mass orbiting a common barycenter
+    // drawables['primary'] = new Star(c, c.w / 2 + 90, c.h / 2, {
     //     color: 'orange',
-    //     diameter: scale(1.6, 15),
+    //     diameter: scale(3, 15),
     //     orbits: b,
+    //     distance: 90,
+    //     orbital_period: 0.4
     // });
-    drawables['secondary'] = new Star(c, c.w / 2 - 50, c.h / 2., {
-        color: 'yellow',
-        diameter: scale(1.2, 15),
+    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
+    //     color: 'yellow',
+    //     diameter: scale(3, 15),
+    //     orbits: b,
+    //     ellipticity: 0,
+    //     distance: -90,
+    //     orbital_period: 0.4
+    // });
+
+    // Example 2: Two bodies with a difference in mass orbiting a common barycenter external to both bodies:
+    // drawables['primary'] = new Star(c, c.w / 2 + 70, c.h / 2, {
+    //     color: 'orange',
+    //     diameter: scale(3, 15),
+    //     orbits: b,
+    //     distance: 70,
+    //     orbital_period: 0.4
+    // });
+    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
+    //     color: 'yellow',
+    //     diameter: scale(1.5, 15),
+    //     orbits: b,
+    //     ellipticity: 0,
+    //     distance: -90,
+    //     orbital_period: 0.4
+    // });
+
+    // Example 3/4: Two bodies with an extreme difference in mass orbiting a common barycenter internal to one body
+    // drawables['primary'] = new Star(c, c.w / 2 + 10, c.h / 2, {
+    //     color: 'orange',
+    //     diameter: scale(4, 15),
+    //     orbits: b,
+    //     distance: 10,
+    //     orbital_period: 0.4
+    // });
+    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
+    //     color: 'yellow',
+    //     diameter: scale(1, 15),
+    //     orbits: b,
+    //     ellipticity: 0,
+    //     distance: -90,
+    //     orbital_period: 0.4
+    // });
+
+
+
+    // Example 5: two ellipses (fixme: barycenter should be in focus)
+    drawables['primary'] = new Star(c, {
+        color: 'orange',
+        diameter: 10,
         orbits: b,
-        ellipticity: 0.45
+        distance: 100,
+        ellipticity: 0.3,
+        orbital_period: 0.9
     });
+    drawables['secondary'] = new Star(c, {
+        color: 'yellow',
+        diameter: 10,
+        orbits: b,
+        ellipticity: 0.3,
+        distance: -100,
+        orbital_period: 0.9
+    });
+
+    let t;
+    drawables['third'] = t = new Star(c, {
+        color: 'brown',
+        diameter: 10,
+        orbits: b,
+        ellipticity: 0.3,
+        distance: 700,
+        orbital_period: 25
+    });
+
+    drawables['third b'] = new Planet(c, {
+        color: 'gray',
+        distance: distance_scale(1),
+        size: planet_size_scale(50),
+        ellipticity: 0,
+        orbital_period: 1,
+        orbits: t,
+    })
+
     return drawables
 }

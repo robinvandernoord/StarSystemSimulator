@@ -1,4 +1,4 @@
-import { setup_solar_system, setup_close_binary } from './examples.js';
+import {setup_close_binary, setup_solar_system} from "./examples.js";
 
 const settings = new URLSearchParams(window.location.search)
 window.ZOOM = settings.get('zoom') || 2;
@@ -33,6 +33,33 @@ class Canvas {
             ctx.stroke();
         }
     }
+
+    draw_ellipse() {
+        // finding the focus of an ellipse
+        const ctx = this.ctx
+
+        // drawing elipses from focus
+        let focus_x = this.w / 2;
+        let focus_y = this.h / 2;
+
+        let semimajor = 400;
+        let semiminor = 300;
+
+        let distance = Math.sqrt(Math.pow(semimajor, 2) - Math.pow(semiminor, 2));
+
+        ctx.beginPath();
+        ctx.ellipse(focus_x - distance, focus_y, semimajor, semiminor, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        semimajor = 400;
+        semiminor = 300;
+
+        distance = Math.sqrt(Math.pow(semimajor, 2) - Math.pow(semiminor, 2));
+
+        ctx.beginPath()
+        ctx.ellipse(focus_x + distance, focus_y, semimajor, semiminor, 0, 0, Math.PI * 2);
+        ctx.stroke();
+    }
 }
 
 
@@ -43,9 +70,8 @@ function main() {
 
     // https://nssdc.gsfc.nasa.gov/planetary/factsheet
 
-    const drawables = setup_solar_system(c)
-    // const drawables = setup_close_binary(c)
-
+    // const drawables = setup_solar_system(c)
+    const drawables = setup_close_binary(c)
 
     interval = setInterval(_ => {
         c.ctx.clearRect(0, 0, c.w, c.h);
@@ -66,7 +92,7 @@ $(_ => {
     $(document).on('keyup', e => {
         const z = e.key - 0.5
         if (z > 0) {
-            update_zoom(z)
+            window.update_zoom(z)
         }
     });
     main();
