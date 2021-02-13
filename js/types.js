@@ -25,6 +25,17 @@ export class Barycenter extends BigObject {
     draw() {
         // this.canvas.draw_circle(this.x, this.y, scale(1, 15), 'black')
     }
+
+    /**
+     *
+     * @param {number} a - Semi major axis of the system
+     * @param {number} m1
+     * @param {number} m2
+     */
+    find_barycenter(a, m1, m2) {
+        let r1 = a * m2 / (m1 + m2);
+        return [r1, a - r1]
+    }
 }
 
 export class Star extends BigObject {
