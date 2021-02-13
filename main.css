@@ -1,11 +1,49 @@
 body {
-    /*background-image: url('seamless space_0.png');*/
     margin: 0;
     padding: 0;
+}
+
+body.background {
+    background-image: url('seamless space_0.png');
 }
 
 
 #space {
     margin: 0;
     padding: 0;
+}
+
+#choice {
+    font-family: arial, sans-serif;
+    background: white;
+    width: 500px;
+    height: 350px;
+    margin: 200px auto;
+    padding: 30px;
+    border-radius: 20px
+}
+
+#choice h1, #choice h6 {
+    margin-top: 0;
+}
+
+#choice ul {
+    position: relative;
+    list-style: none;
+}
+
+#choice li {
+    display: block;
+    padding: 10px 0;
+}
+
+#choice li::before {
+    content: '✨';
+    position: absolute;
+    left: 18px;
+}
+
+#choice li a {
+    color: black;
+    text-align: center;
 }

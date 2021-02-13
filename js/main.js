@@ -1,4 +1,4 @@
-import {setup_close_binary} from "./examples.js";
+import {setup_close_binary, setup_solar_system} from "./examples.js";
 
 const settings = new URLSearchParams(window.location.search)
 window.ZOOM = settings.get('zoom') || 2;
@@ -66,13 +66,15 @@ class Canvas {
 
 let interval;
 
-function main() {
+const SYSTEMS = {
+    'solar': setup_solar_system,
+    'close_binary': setup_close_binary,
+};
+
+function draw_system(func) {
     const c = new Canvas('#space')
 
-    // https://nssdc.gsfc.nasa.gov/planetary/factsheet
-
-    // const drawables = setup_solar_system(c)
-    const drawables = setup_close_binary(c)
+    const drawables = func(c)
 
     interval = setInterval(_ => {
         c.ctx.clearRect(0, 0, c.w, c.h);
@@ -80,6 +82,29 @@ function main() {
             item.draw();
         }
     }, 10)
+}
+
+
+function main() {
+    // https://nssdc.gsfc.nasa.gov/planetary/factsheet
+
+    let func = SYSTEMS[settings.get('system')];
+    if (func) {
+        draw_system(func)
+    } else {
+        const $space = $('#space');
+        const $choice = $('#choice')
+        $space.hide();
+        $choice.show();
+
+        $('#choice a').on('click', e => {
+            e.preventDefault();
+            $space.show();
+            $choice.hide();
+            const $target = $(e.target);
+            draw_system(SYSTEMS[$target.data('system')])
+        })
+    }
 
 }
 
@@ -97,4 +122,6 @@ $(_ => {
         }
     });
     main();
+
+    $('#background-toggle').on('change', _ => $('body').toggleClass('background'));
 })

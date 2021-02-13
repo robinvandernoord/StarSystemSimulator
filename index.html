@@ -6,10 +6,27 @@
 
     <link href="./main.css" rel="stylesheet"/>
 </head>
-<body>
+<body class="background">
 <canvas id="space">
 
 </canvas>
+
+<div id="choice" style="display: none">
+    <h1>Star System Simulator</h1>
+    <h4>Choose a Star System:</h4>
+    <ul>
+    <li><a href="#" data-system="solar">Solar System</a></li>
+    <li><a href="#" data-system="close_binary">Close Binary</a></li>
+    <li><a href="#" data-system="tight_binary">Wide Binary</a></li>
+    <li><a href="#" data-system="triple">Triple System</a></li>
+    <li><a href="#" data-system="quadruple">Quadruple System</a></li>
+    </ul>
+
+    <div>
+        <input type="checkbox" id="background-toggle" checked>
+        <label for="background-toggle">Enable Star Background?</label>
+    </div>
+</div>
 
 <script
         src="https://code.jquery.com/jquery-3.5.1.min.js"
