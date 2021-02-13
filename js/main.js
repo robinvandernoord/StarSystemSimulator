@@ -1,4 +1,4 @@
-import {setup_close_binary, setup_solar_system} from "./examples.js";
+import {setup_close_binary} from "./examples.js";
 
 const settings = new URLSearchParams(window.location.search)
 window.ZOOM = settings.get('zoom') || 2;
@@ -60,6 +60,7 @@ class Canvas {
         ctx.ellipse(focus_x + distance, focus_y, semimajor, semiminor, 0, 0, Math.PI * 2);
         ctx.stroke();
     }
+
 }
 
 

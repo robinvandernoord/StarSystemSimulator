@@ -85,6 +85,7 @@ export function setup_close_binary(c) {
     let b;
     drawables['barycenter'] = b = new Barycenter(c, c.w / 2, c.h / 2, {});
 
+
     // example 1: Two bodies with the same mass orbiting a common barycenter
     // drawables['primary'] = new Star(c, c.w / 2 + 90, c.h / 2, {
     //     color: 'orange',
@@ -137,23 +138,34 @@ export function setup_close_binary(c) {
     // });
 
 
+    // Example 5: two ellipses
 
-    // Example 5: two ellipses (fixme: barycenter should be in focus)
+    let weights = [25.2, 22.8];
+    const bb = b.find_barycenter(distance_scale(5), ...weights);
     drawables['primary'] = new Star(c, {
         color: 'orange',
-        diameter: 10,
+        diameter: weights[0],
         orbits: b,
-        distance: 100,
+        distance: bb[0],
         ellipticity: 0.3,
-        orbital_period: 0.9
+        orbital_period: 0.6
     });
     drawables['secondary'] = new Star(c, {
         color: 'yellow',
-        diameter: 10,
+        diameter: weights[1],
         orbits: b,
-        ellipticity: 0.3,
-        distance: -100,
-        orbital_period: 0.9
+        ellipticity: 0.2,
+        distance: -bb[1],
+        orbital_period: 0.6
+    });
+
+    drawables['system AB b'] = new Planet(c, {
+        distance: distance_scale(7),
+        size: planet_size_scale(40),
+        color: '#8504bd',
+        ellipticity: 0.5,
+        orbital_period: 1,
+        orbits: b,
     });
 
     let t;
