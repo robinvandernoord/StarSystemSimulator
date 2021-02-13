@@ -34,7 +34,7 @@ export class Barycenter extends BigObject {
      */
     find_barycenter(a, m1, m2) {
         let r1 = a * m2 / (m1 + m2);
-        return [r1, a - r1]
+        return [r1, -(a - r1)]
     }
 }
 

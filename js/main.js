@@ -1,7 +1,6 @@
-import {setup_close_binary, setup_solar_system} from "./examples.js";
+import {setup_close_binary, setup_solar_system, setup_wide_binary} from "./examples.js";
 
 const settings = new URLSearchParams(window.location.search)
-window.ZOOM = settings.get('zoom') || 2;
 
 /*
 Zoom levels:
@@ -69,6 +68,7 @@ let interval;
 const SYSTEMS = {
     'solar': setup_solar_system,
     'close_binary': setup_close_binary,
+    'wide_binary': setup_wide_binary,
 };
 
 function draw_system(func) {
@@ -86,7 +86,10 @@ function draw_system(func) {
 
 
 function main() {
+    $('#background-toggle').on('change', _ => $('body').toggleClass('background'));
+    $('#zoom_lvl').on('change', e => window.ZOOM = $(e.target).val());
     // https://nssdc.gsfc.nasa.gov/planetary/factsheet
+
 
     let func = SYSTEMS[settings.get('system')];
     if (func) {
@@ -108,20 +111,4 @@ function main() {
 
 }
 
-window.update_zoom = zoom => {
-    window.ZOOM = zoom;
-    clearInterval(interval)
-    main();
-}
-
-$(_ => {
-    $(document).on('keyup', e => {
-        const z = e.key - 0.5
-        if (z > 0) {
-            window.update_zoom(z)
-        }
-    });
-    main();
-
-    $('#background-toggle').on('change', _ => $('body').toggleClass('background'));
-})
+$(main)

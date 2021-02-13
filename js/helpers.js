@@ -1,9 +1,13 @@
+/**
+ * Helper functions to calculate stuff:
+ */
+
 export function scale(million, factor = 200) {
-    return million * factor / window.ZOOM;
+    return million * factor / 2;
 }
 
 export function planet_size_scale(thousand_km) {
-    return Math.log(thousand_km) * 5 / window.ZOOM;
+    return Math.log(thousand_km) * 2.5;
 }
 
 export function distance_scale(AU) {
