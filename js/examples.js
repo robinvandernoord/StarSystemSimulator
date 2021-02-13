@@ -1,5 +1,5 @@
 import {Barycenter, Planet, Star} from './types.js';
-import {distance_scale, planet_size_scale, scale} from "./helpers.js";
+import {distance_scale, planet_size_scale, scale, sum} from "./helpers.js";
 
 export function setup_solar_system(c) {
     const drawables = {};
@@ -124,7 +124,7 @@ export function setup_wide_binary(c) {
     let weights = [30, 30]; // both same weight
     const bb = b.find_barycenter(distance_scale(10), ...weights);
 
-    drawables['primary'] = star_a = new Star(c,  {
+    drawables['primary'] = star_a = new Star(c, {
         color: 'orange',
         diameter: weights[0],
         orbits: b,
@@ -132,7 +132,7 @@ export function setup_wide_binary(c) {
         ellipticity: 0,
         orbital_period: 50
     });
-    drawables['secondary'] = star_b = new Star(c,  {
+    drawables['secondary'] = star_b = new Star(c, {
         color: 'yellow',
         diameter: weights[1],
         orbits: b,
@@ -170,95 +170,30 @@ export function setup_wide_binary(c) {
 
 }
 
-function some_tests(c) {
+export function setup_triple(c) {
     const drawables = {};
-    let b;
+    let b, t;
     drawables['barycenter'] = b = new Barycenter(c, c.w / 2, c.h / 2, {});
 
-
-    // example 1: Two bodies with the same mass orbiting a common barycenter
-    // drawables['primary'] = new Star(c, c.w / 2 + 90, c.h / 2, {
-    //     color: 'orange',
-    //     diameter: scale(3, 15),
-    //     orbits: b,
-    //     distance: 90,
-    //     orbital_period: 0.4
-    // });
-    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
-    //     color: 'yellow',
-    //     diameter: scale(3, 15),
-    //     orbits: b,
-    //     ellipticity: 0,
-    //     distance: -90,
-    //     orbital_period: 0.4
-    // });
-
-    // Example 2: Two bodies with a difference in mass orbiting a common barycenter external to both bodies:
-    // drawables['primary'] = new Star(c, c.w / 2 + 70, c.h / 2, {
-    //     color: 'orange',
-    //     diameter: scale(3, 15),
-    //     orbits: b,
-    //     distance: 70,
-    //     orbital_period: 0.4
-    // });
-    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
-    //     color: 'yellow',
-    //     diameter: scale(1.5, 15),
-    //     orbits: b,
-    //     ellipticity: 0,
-    //     distance: -90,
-    //     orbital_period: 0.4
-    // });
-
-    // Example 3/4: Two bodies with an extreme difference in mass orbiting a common barycenter internal to one body
-    // drawables['primary'] = new Star(c, c.w / 2 + 10, c.h / 2, {
-    //     color: 'orange',
-    //     diameter: scale(4, 15),
-    //     orbits: b,
-    //     distance: 10,
-    //     orbital_period: 0.4
-    // });
-    // drawables['secondary'] = new Star(c, c.w / 2 - 90, c.h / 2., {
-    //     color: 'yellow',
-    //     diameter: scale(1, 15),
-    //     orbits: b,
-    //     ellipticity: 0,
-    //     distance: -90,
-    //     orbital_period: 0.4
-    // });
-
-
-    // Example 5: two ellipses
-
-    let weights = [25.2, 22.8];
-    const bb = b.find_barycenter(distance_scale(5), ...weights);
+    let weights = [18, 18];
+    const bb = b.find_barycenter(distance_scale(2), ...weights);
     drawables['primary'] = new Star(c, {
         color: 'orange',
         diameter: weights[0],
         orbits: b,
         distance: bb[0],
-        ellipticity: 0.3,
-        orbital_period: 0.6
+        ellipticity: 0.02,
+        orbital_period: 0.4
     });
     drawables['secondary'] = new Star(c, {
         color: 'yellow',
         diameter: weights[1],
         orbits: b,
-        ellipticity: 0.2,
+        ellipticity: 0.01,
         distance: bb[1],
-        orbital_period: 0.6
+        orbital_period: 0.4
     });
 
-    drawables['system AB b'] = new Planet(c, {
-        distance: distance_scale(7),
-        size: planet_size_scale(40),
-        color: '#8504bd',
-        ellipticity: 0.5,
-        orbital_period: 1,
-        orbits: b,
-    });
-
-    let t;
     drawables['third'] = t = new Star(c, {
         color: 'brown',
         diameter: 10,
@@ -276,6 +211,74 @@ function some_tests(c) {
         orbital_period: 1,
         orbits: t,
     })
+    return drawables;
+}
+
+export function setup_quadruple(c) {
+    let b0, b1, b2;
+    const drawables = {}
+    drawables['barycenter_0'] = b0 = new Barycenter(c, c.w / 2, c.h / 2, {});
+
+    const weights_binary1 = [15, 17];
+    const weights_binary2 = [14, 8];
+    const weights_sum = [sum(weights_binary1), sum(weights_binary2)]
+
+    const bb0 = b0.find_barycenter(distance_scale(25), ...weights_sum);
+
+    drawables['barycenter_1'] = b1 = new Barycenter(c, 0,0, {
+        orbits: b0,
+        orbital_period: 3,
+        distance: bb0[0],
+        color: 'blue',
+    });
+    drawables['barycenter_2'] = b2 = new Barycenter(c, 0,0, {
+        orbits: b0,
+        orbital_period: 3,
+        distance: bb0[1],
+        color: 'green'
+    });
+
+    const bb1 = b1.find_barycenter(distance_scale(3), ...weights_binary1);
+    const bb2 = b2.find_barycenter(distance_scale(2), ...weights_binary2);
+
+    drawables['binary1_star1'] = new Star(c,{
+        color: 'blue',
+        diameter: weights_binary1[0],
+        orbits: b1,
+        ellipticity: 0.1,
+        distance: bb1[0],
+        orbital_period: 10
+    })
+
+
+    drawables['binary1_star2'] = new Star(c,{
+        color: 'green',
+        diameter: weights_binary1[1],
+        orbits: b1,
+        ellipticity: 0.1,
+        distance: bb1[1],
+        orbital_period: 10
+    })
+
+    drawables['binary2_star1'] = new Star(c,{
+        color: 'yellow',
+        diameter: weights_binary2[0],
+        orbits: b2,
+        ellipticity: 0.04,
+        distance: bb2[0],
+        orbital_period: 5
+    })
+
+    drawables['binary2_star2'] = new Star(c,{
+        color: 'red',
+        diameter: weights_binary2[1],
+        orbits: b2,
+        ellipticity: 0.04,
+        distance: bb2[1],
+        orbital_period: 5
+    })
 
     return drawables
+
+
 }

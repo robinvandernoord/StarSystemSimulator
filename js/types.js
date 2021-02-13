@@ -22,8 +22,42 @@ export class BigObject {
 }
 
 export class Barycenter extends BigObject {
+    constructor(canvas, x, y, options) {
+
+        if (!options.orbits) {
+            super(canvas, x, y, options);
+            return
+        } // else:
+
+        let distance = Math.sqrt(Math.pow(100 * (1 + options.ellipticity), 2) - Math.pow(100, 2));
+        super(canvas, options.orbits.x, options.orbits.y, options);
+        this.focus_x = options.distance > 0 ? options.orbits.x + distance : options.orbits.x - distance
+    }
+
     draw() {
         // this.canvas.draw_circle(this.x, this.y, scale(1, 15), 'black')
+        this.update_xy()
+    }
+
+    update_xy() {
+        if (!this.options.distance) {
+            // dont move
+            return;
+        }
+
+        const newX = this.options.distance * 1 * Math.cos(this.angle * (Math.PI / 180));
+        const newY = this.options.distance * (1 - (this.options.ellipticity || 0)) * Math.sin(this.angle * (Math.PI / 180));
+
+        // to place the square correctly we must add the calculated
+        // new x and y values to the circle center
+        this.x = newX + this.options.orbits.x;
+        this.y = newY + this.options.orbits.y;
+
+        this.angle += 1 / this.options.orbital_period * 0.5
+        if (this.angle > 360) {
+            this.angle -= 360;
+        }
+
     }
 
     /**
@@ -39,24 +73,26 @@ export class Barycenter extends BigObject {
 }
 
 export class Star extends BigObject {
-    constructor(canvas, options) {
+    calculate_focus_x(){
+        let options = this.options
         let distance = Math.sqrt(Math.pow(100 * (1 + options.ellipticity), 2) - Math.pow(100, 2));
-        super(canvas, options.orbits.x, options.orbits.y, options);
         this.focus_x = options.distance > 0 ? options.orbits.x + distance : options.orbits.x - distance
     }
 
+    constructor(canvas, options) {
+        super(canvas, options.orbits.x, options.orbits.y, options);
+    }
+
     draw() {
+        this.calculate_focus_x() // needed to follow moving barycenter
+
         this.canvas.draw_circle(this.x, this.y, this.options.diameter, this.options.color)
         this.draw_orbit(Math.abs(this.options.distance), this.options.ellipticity || 0)
-
         this.update_xy();
-
-        // draw focus (temp):
-        // this.canvas.draw_circle(this.focus_x, this.options.orbits.y, 10, this.options.distance > 0 ? 'green' : 'red')
     }
 
     update_xy() {
-        if(!this.options.distance){
+        if (!this.options.distance) {
             // dont move
             return;
         }
