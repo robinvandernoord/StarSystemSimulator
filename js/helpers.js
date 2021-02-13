@@ -23,6 +23,6 @@ export function deg_to_rad(deg) {
     return deg * Math.PI / 180
 }
 
-export function sum(array){
+export function sum(array) {
     return array.reduce((a, b) => a + b, 0)
 }

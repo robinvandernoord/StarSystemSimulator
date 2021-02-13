@@ -1,4 +1,4 @@
-import {deg_to_rad, scale} from "./helpers.js";
+import {deg_to_rad} from "./helpers.js";
 
 
 export class BigObject {
@@ -73,14 +73,14 @@ export class Barycenter extends BigObject {
 }
 
 export class Star extends BigObject {
-    calculate_focus_x(){
+    constructor(canvas, options) {
+        super(canvas, options.orbits.x, options.orbits.y, options);
+    }
+
+    calculate_focus_x() {
         let options = this.options
         let distance = Math.sqrt(Math.pow(100 * (1 + options.ellipticity), 2) - Math.pow(100, 2));
         this.focus_x = options.distance > 0 ? options.orbits.x + distance : options.orbits.x - distance
-    }
-
-    constructor(canvas, options) {
-        super(canvas, options.orbits.x, options.orbits.y, options);
     }
 
     draw() {

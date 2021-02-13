@@ -225,13 +225,13 @@ export function setup_quadruple(c) {
 
     const bb0 = b0.find_barycenter(distance_scale(25), ...weights_sum);
 
-    drawables['barycenter_1'] = b1 = new Barycenter(c, 0,0, {
+    drawables['barycenter_1'] = b1 = new Barycenter(c, 0, 0, {
         orbits: b0,
         orbital_period: 3,
         distance: bb0[0],
         color: 'blue',
     });
-    drawables['barycenter_2'] = b2 = new Barycenter(c, 0,0, {
+    drawables['barycenter_2'] = b2 = new Barycenter(c, 0, 0, {
         orbits: b0,
         orbital_period: 3,
         distance: bb0[1],
@@ -241,7 +241,7 @@ export function setup_quadruple(c) {
     const bb1 = b1.find_barycenter(distance_scale(3), ...weights_binary1);
     const bb2 = b2.find_barycenter(distance_scale(2), ...weights_binary2);
 
-    drawables['binary1_star1'] = new Star(c,{
+    drawables['binary1_star1'] = new Star(c, {
         color: 'blue',
         diameter: weights_binary1[0],
         orbits: b1,
@@ -251,7 +251,7 @@ export function setup_quadruple(c) {
     })
 
 
-    drawables['binary1_star2'] = new Star(c,{
+    drawables['binary1_star2'] = new Star(c, {
         color: 'green',
         diameter: weights_binary1[1],
         orbits: b1,
@@ -260,7 +260,7 @@ export function setup_quadruple(c) {
         orbital_period: 10
     })
 
-    drawables['binary2_star1'] = new Star(c,{
+    drawables['binary2_star1'] = new Star(c, {
         color: 'yellow',
         diameter: weights_binary2[0],
         orbits: b2,
@@ -269,7 +269,7 @@ export function setup_quadruple(c) {
         orbital_period: 5
     })
 
-    drawables['binary2_star2'] = new Star(c,{
+    drawables['binary2_star2'] = new Star(c, {
         color: 'red',
         diameter: weights_binary2[1],
         orbits: b2,
