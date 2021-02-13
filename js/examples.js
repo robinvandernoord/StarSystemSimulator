@@ -129,7 +129,7 @@ export function setup_wide_binary(c) {
         diameter: weights[0],
         orbits: b,
         distance: bb[0],
-        ellipticity: 0.01,
+        ellipticity: 0,
         orbital_period: 50
     });
     drawables['secondary'] = star_b = new Star(c,  {
